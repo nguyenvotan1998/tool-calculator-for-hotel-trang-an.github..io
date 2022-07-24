@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Tính Tiền</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 500px;
+            height: 500px;
+            border: 1px solid gray;
+            border-radius: 10px;
+            align-content: center;
+        }
+
+        input {
+            margin-left: 37px;
+        }
+
+        #money {
+            width: 100px;
+        }
+
+        #vat-result:focus {
+            border: 1px solid red;
+            color: red;
+        }
+
+        .form p {
+            /* other styles goes here... */
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        abbr {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form">
+            <p>Tính tiền Atlas Copco</p>
+            <br>
+            <label for="money">Nhập Tiền Phòng 1 ngày:</label>
+            <select name="money" id="money">
+                <option value="300000">300.000đ</option>
+                <option value="330000">330.000đ</option>
+                <option value="370000">370.000đ</option>
+                <option value="410000">410.000đ</option>
+                <option value="450000">450.000đ</option>
+                <option value="480000">480.000đ</option>
+                <option value="500000" selected>500.000đ</option>
+            </select>
+            <br>
+            <label for="dayNumber">Số Ngày Ở:</label>
+            <input type="number" id="dayNumber">
+            <br>
+            <label for="vat">VAT %:</label>
+            <input type="number" id="vat" value="15.5">
+            <button type="button" id="button" onclick={TinhTien()}>Tính Tiền</button>
+            <br>
+            <p><abbr title="% VAT * Tổng tiền phòng">VAT</abbr></p>
+            <p id="vatResult"></p>
+            <br>
+            <p><abbr title="VAT + Tổng tiền phòng">Sau Thuế</abbr></p>
+            <p id="totalResult"></p>
+            <br>
+            <p><abbr title="Tổng sau thuế / 1.1">Tổng Cộng</abbr></p>
+            <p id="totalFinish"></p>
+        </div>
+    </div>
+
+    <script>
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function TinhTien() {
+            var money = document.getElementById("money").value;
+            var dayNumber = document.getElementById("dayNumber").value;
+            var vatPercent = document.getElementById("vat").value;
+            var vat = ((money * dayNumber) * vatPercent) / 100;
+            var vatFormat = numberWithCommas(vat);
+            document.getElementById("vatResult").innerHTML = vatFormat;
+            var total = (money * dayNumber) + vat;
+            var totalFormat = numberWithCommas(total);
+            document.getElementById("totalResult").innerHTML = totalFormat;
+            var totalFinish = (total / 1.1);
+            var totalFinishRound = Math.round(totalFinish);
+            var totalFinishFormat = numberWithCommas(totalFinishRound);
+            document.getElementById("totalFinish").innerHTML = totalFinishFormat;
+        }
+    </script>
+</body>
+
+</html>
