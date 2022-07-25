@@ -10,18 +10,67 @@
         * {
             padding: 0;
             margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .container {
+            display: flex;
+            flex: 1;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form {
             width: 500px;
             height: 500px;
-            border: 1px solid gray;
+            /* border: 1px solid gray; */
             border-radius: 10px;
             align-content: center;
+            display: flex;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            flex-direction: column;
+            /* box-shadow: 4px 6px #F1F1F1; */
+        }
+
+        h3 {
+            margin: 20px 0px;
+            text-align: center;
+        }
+
+        .input,
+        .result {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px;
+        }
+
+        input,
+        select {
+            /*  border: 1px solid blue; */
+            border: 1px solid #CFD2CF;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            border: 1px solid #CFD2CF;
+            border-radius: 10px;
+            background: #0096FF;
+            width: 90px;
+            height: 40px;
+            font-size: medium;
+            color: white;
         }
 
         input {
-            margin-left: 37px;
+            padding-left: 10px;
+            width: 74px;
         }
 
         #money {
@@ -48,34 +97,52 @@
 <body>
     <div class="container">
         <div class="form">
-            <p>Tính tiền Atlas Copco</p>
-            <br>
-            <label for="money">Nhập Tiền Phòng 1 ngày:</label>
-            <select name="money" id="money">
-                <option value="300000">300.000đ</option>
-                <option value="330000">330.000đ</option>
-                <option value="370000">370.000đ</option>
-                <option value="410000">410.000đ</option>
-                <option value="450000">450.000đ</option>
-                <option value="480000">480.000đ</option>
-                <option value="500000" selected>500.000đ</option>
-            </select>
-            <br>
-            <label for="dayNumber">Số Ngày Ở:</label>
-            <input type="number" id="dayNumber">
-            <br>
-            <label for="vat">VAT %:</label>
-            <input type="number" id="vat" value="15.5">
-            <button type="button" id="button" onclick={TinhTien()}>Tính Tiền</button>
-            <br>
-            <p><abbr title="% VAT * Tổng tiền phòng">VAT</abbr></p>
-            <p id="vatResult"></p>
-            <br>
-            <p><abbr title="VAT + Tổng tiền phòng">Sau Thuế</abbr></p>
-            <p id="totalResult"></p>
-            <br>
-            <p><abbr title="Tổng sau thuế / 1.1">Tổng Cộng</abbr></p>
-            <p id="totalFinish"></p>
+            <h3>Tính tiền Atlas Copco</h3>
+            <div class="input money">
+                <label for="select-money">Nhập Tiền Phòng 1 ngày:</label>
+                <select name="select-money" id="select-money">
+                    <option value="300000">300.000đ</option>
+                    <option value="330000">330.000đ</option>
+                    <option value="370000">370.000đ</option>
+                    <option value="410000">410.000đ</option>
+                    <option value="450000">450.000đ</option>
+                    <option value="480000">480.000đ</option>
+                    <option value="500000" selected>500.000đ</option>
+                </select>
+            </div>
+
+            <div class="input day-number">
+                <label for="id-day-number">Số Ngày Ở:</label>
+                <input type="number" id="id-day-number">
+            </div>
+
+            <div class="input vat">
+                <label for="id-vat">VAT %:</label>
+                <input type="number" id="id-vat" value="15.5">
+            </div>
+
+            <div class="button">
+                <button type="button" id="button" onclick={TinhTien()}>Tính Tiền</button>
+            </div>
+
+            <div class="result">
+                <abbr title="% VAT * Tổng tiền phòng">VAT:</abbr>
+                <p id="vatResult"></p>
+            </div>
+
+            <div class="result">
+                <abbr title="VAT + Tổng tiền phòng">Sau Thuế:</abbr>
+                <p id="totalResult"></p>
+            </div>
+
+            <div class="result">
+                <abbr title="Tổng sau thuế / 1.1">Tổng Cộng:</abbr>
+                <p id="totalFinish"></p>
+            </div>
+            <div class="result">
+                <abbr title="Tổng cộng + (Tổng cộng * 8%)">Cuối Cùng:</abbr>
+                <p id="finish"></p>
+            </div>
         </div>
     </div>
 
@@ -86,9 +153,9 @@
         }
 
         function TinhTien() {
-            var money = document.getElementById("money").value;
-            var dayNumber = document.getElementById("dayNumber").value;
-            var vatPercent = document.getElementById("vat").value;
+            var money = document.getElementById("select-money").value;
+            var dayNumber = document.getElementById("id-day-number").value;
+            var vatPercent = document.getElementById("id-vat").value;
             var vat = ((money * dayNumber) * vatPercent) / 100;
             var vatFormat = numberWithCommas(vat);
             document.getElementById("vatResult").innerHTML = vatFormat;
@@ -99,6 +166,10 @@
             var totalFinishRound = Math.round(totalFinish);
             var totalFinishFormat = numberWithCommas(totalFinishRound);
             document.getElementById("totalFinish").innerHTML = totalFinishFormat;
+            var finish = (totalFinish * 8) / 100 + totalFinish;
+            var finishRound = Math.round(finish);
+            var finishFormat = numberWithCommas(finishRound);
+            document.getElementById("finish").innerHTML = finishFormat;
         }
     </script>
 </body>
